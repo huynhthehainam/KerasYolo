@@ -171,9 +171,10 @@ class YOLO(object):
                 [tuple(text_origin), tuple(text_origin + label_size)],
                 fill=self.colors[c])
             draw.text(text_origin, label, fill=(0, 0, 0), font=font)
-        end = timer()
-        print(end - start)
-        return image
+            return [left,top,right,bottom]
+        # end = timer()
+        # print(end - start)
+        
 
     def close_session(self):
         self.sess.close()
