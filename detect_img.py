@@ -29,7 +29,7 @@ def bb_intersection_over_union(boxA, boxB):
 
 
 def detect_img(yolo):
-    file_names = glob.glob('./outdu/*.jpg')
+    file_names = glob.glob('./video/outputframe/*.jpg')
     count = 0
     text_write = ''
     for file_name in file_names:
@@ -37,24 +37,31 @@ def detect_img(yolo):
         file_label = file_name.replace('jpg', 'txt')
         if os.path.exists(file_name) and os.path.exists(file_label):
             box_A = convert_annotation(file_label)
-            img = Image.open(file_name)
+            # img = Image.open(file_name)
 
-            box_B = yolo.detect_image(img)
+            # box_B = yolo.detect_image(img)
 
-            if box_A is not None and box_B is not None:
-                count+=1
+            # if box_A is not None and box_B is not None:
+            #     count+=1
                 # print(box_A[0],box_A[1],box_A[2], box_A[3])
                 # print(box_B[0],box_B[1],box_B[2], box_B[3])
-                iou = bb_intersection_over_union(box_A, box_B)
-                img = cv2.imread(file_name)
-                cv2.rectangle(img, (box_A[0], box_A[1]),
-                              (box_A[2], box_A[3]), (225, 0, 0), 2)
-                cv2.rectangle(img, (box_B[0], box_B[1]),
-                              (box_B[2], box_B[3]), (0, 225, 0), 2)
-                new_file_name = './compare/'+str(count)+'.jpg'
-                cv2.imwrite(new_file_name,img)
-                text_write += new_file_name +','+str(iou)+'\n'
-                print(iou)
+                # iou = bb_intersection_over_union(box_A, box_B)
+                # img = cv2.imread(file_name)
+                # cv2.rectangle(img, (box_A[0], box_A[1]),
+                #               (box_A[2], box_A[3]), (225, 0, 0), 2)
+                # cv2.rectangle(img, (box_B[0], box_B[1]),
+                #               (box_B[2], box_B[3]), (0, 225, 0), 2)
+                # new_file_name = './compare/'+str(count)+'.jpg'
+                # cv2.imwrite(new_file_name,img)
+                # text_write += new_file_name +','+str(iou)+'\n'
+               
+        img = Image.open(file_name)
+
+        box_B = yolo.detect_image(img)
+        if box_B is not None:
+            text_write += file_name +','+ str(1)+'\n'
+        else:
+            text_write += file_name +','+ str(0)+'\n'
     with open('./compare.csv','w') as f:
         f.write(text_write)
     # r_image.show()
