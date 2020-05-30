@@ -1,7 +1,7 @@
 import glob
 import cv2
 def abc():
-    list_files = glob.glob('./model_data/image/*.txt')
+    list_files = glob.glob('./model_data/images/*.txt')
     write_data = ''
     for file_name in list_files:
         raw_data = ''
@@ -10,7 +10,7 @@ def abc():
 
         if raw_data != '':
             file_image = file_name.replace('txt', 'jpg')
-            file_image = file_image.replace('.\\', './model_data/image/')
+            file_image = file_image.replace('.\\', './model_data/images/')
             write_data += file_image
             lines = raw_data.split('\n')
             for line in lines:
@@ -27,13 +27,7 @@ def abc():
                 
                 write_data+= ' ' + str(x_min) + ','+str(y_min)+','+ str(x_max)+','+str(y_max)+','+str(int(words[0]))
             write_data+='\n'
-
-            # img = cv2.imread(file_image)
-            # cv2.rectangle(img,(x_min,y_min),(x_max, y_max),(255,0,0), 2)
-            # cv2.imshow('img',img)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
-    with open('label.txt','w') as f:
+    with open('./model_data/train.txt','w') as f:
         f.write(write_data)
 
 abc()

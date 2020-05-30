@@ -131,7 +131,7 @@ class YOLO(object):
                     size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
         thickness = (image.size[0] + image.size[1]) // 300
         outputs = {'helipad':[],'arrow':[]}
-        draw = ImageDraw.Draw(image)
+        # draw = ImageDraw.Draw(image)
         labels = []
         for i, c in reversed(list(enumerate(out_classes))):
             predicted_class = self.class_names[c]
@@ -140,19 +140,17 @@ class YOLO(object):
 
             label = '{} {:.2f}'.format(predicted_class, score)
             
-            label_size = draw.textsize(label, font)
+            # label_size = draw.textsize(label, font)
 
             top, left, bottom, right = box
             top = max(0, np.floor(top + 0.5).astype('int32'))
             left = max(0, np.floor(left + 0.5).astype('int32'))
             bottom = min(image.size[1], np.floor(bottom + 0.5).astype('int32'))
             right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
-            print(label, (left, top), (right, bottom))
             height = bottom-top
             width = right-left
             aa= {'top':top, 'left': left, 'right': right, 'bottom':bottom,'ratio':(bottom-top)/(right-left)}
             label = label.split(' ')[0]
-            print(outputs[label])
             outputs[label].append(aa)
         helipads = outputs['helipad']
         helipads = sorted(helipads, key = lambda x: x['ratio'])
@@ -165,20 +163,20 @@ class YOLO(object):
             right= helipads[0]['right']
             top= helipads[0]['top']
             bottom= helipads[0]['bottom']
-            if top - label_size[1] >= 0:
-                text_origin = np.array([left, top - label_size[1]])
-            else:
-                text_origin = np.array([left, top + 1])
+            # if top - label_size[1] >= 0:
+            #     text_origin = np.array([left, top - label_size[1]])
+            # else:
+            #     text_origin = np.array([left, top + 1])
 
             # My kingdom for a good redistributable image drawing library.
-            for i in range(thickness):
-                draw.rectangle(
-                    [left + i, top + i, right - i, bottom - i],
-                    outline=self.colors[c])
-            draw.rectangle(
-                [tuple(text_origin), tuple(text_origin + label_size)],
-                fill=self.colors[c])
-            draw.text(text_origin, label, fill=(0, 0, 0), font=font)
+            # for i in range(thickness):
+            #     draw.rectangle(
+            #         [left + i, top + i, right - i, bottom - i],
+            #         outline=self.colors[c])
+            # draw.rectangle(
+            #     [tuple(text_origin), tuple(text_origin + label_size)],
+            #     fill=self.colors[c])
+            # draw.text(text_origin, label, fill=(0, 0, 0), font=font)
         
             box_heli = [left,top,right,bottom]
         if (len(arrows)>0):
@@ -186,20 +184,20 @@ class YOLO(object):
             right= arrows[0]['right']
             top= arrows[0]['top']
             bottom= arrows[0]['bottom']
-            if top - label_size[1] >= 0:
-                text_origin = np.array([left, top - label_size[1]])
-            else:
-                text_origin = np.array([left, top + 1])
+            # if top - label_size[1] >= 0:
+            #     text_origin = np.array([left, top - label_size[1]])
+            # else:
+            #     text_origin = np.array([left, top + 1])
 
             # My kingdom for a good redistributable image drawing library.
-            for i in range(thickness):
-                draw.rectangle(
-                    [left + i, top + i, right - i, bottom - i],
-                    outline=self.colors[c])
-            draw.rectangle(
-                [tuple(text_origin), tuple(text_origin + label_size)],
-                fill=self.colors[c])
-            draw.text(text_origin, label, fill=(0, 0, 0), font=font)
+            # for i in range(thickness):
+            #     draw.rectangle(
+            #         [left + i, top + i, right - i, bottom - i],
+            #         outline=self.colors[c])
+            # draw.rectangle(
+            #     [tuple(text_origin), tuple(text_origin + label_size)],
+            #     fill=self.colors[c])
+            # draw.text(text_origin, label, fill=(0, 0, 0), font=font)
         
             box_arrow = [left,top,right,bottom]
         return box_heli,box_arrow
